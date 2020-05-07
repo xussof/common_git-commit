@@ -1,0 +1,8 @@
+#byxussofupdate find for a better solution than shell
+- name: Git commit changes to {{ git_branch }} branch on {{ git_repo_name }} repository
+  shell: 'git commit -m "{{ git_comment }}"'
+  args:
+    chdir: "{{ git_chdir }}"
+  #byxussof make a fail when != Your branch is up to date with
+  ignore_errors: true
+  when: with_commits == true

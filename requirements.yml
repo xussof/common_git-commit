@@ -1,0 +1,5 @@
+---
+- src: git@github.com:xussof/software_git
+  scm: git
+  version: master
+  name: xussof.software_git
