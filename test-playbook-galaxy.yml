@@ -1,0 +1,39 @@
+#ansible-playbook test-playbook-galaxy.yml --extra-vars "ansible_become_pass=sudo_pass"
+#To run without installing software dependencies
+#ansible-playbook test-playbook-galaxy.yml --extra-vars "ansible_become_pass=sudo_pass" --skip-tags "software"
+- hosts: localhost
+
+  vars_files:
+    - ../../../../group_vars/all.yml
+
+  tasks:
+    - name: Tempalte mainyml.j2
+      template:
+        src: meta/mainyml.j2
+        dest: meta/main.yml
+
+    - name: Tempalte mainyml.j2
+      template:
+        src: requirementsyml.j2
+        dest: requirements.yml
+
+- hosts: localhost
+
+  pre_tasks:
+     - raw:  ansible-galaxy role install -r requirements.yml
+
+  vars_files: ../../../../group_vars/all.yml
+
+  vars:
+    with_commits: true
+    vars:
+      git_chdir: "/{{ host_root_dir }}/{{ repos_dir }}/{{ item.value.repo_git_name }}/{{ item.value.repo_project }}{{ item.value.repo_name }}"
+      git_branch: "{{ item.value.repo_git_branch|default('master') }}"
+      git_repo_name: "{{ item.value.repo_name }}"
+      git_comment: "Created new kapsule cluster for int"
+
+
+  tasks:
+    - name: Including role to test
+      include_role:
+        name: '../common_git-commit'

@@ -1,5 +1,4 @@
 common_git-commit
-
 =========
 
 This role will commit modified files inside a git repo.
@@ -11,18 +10,18 @@ All dependencies will appear on requirements.yml file
 
 Role Variables
 --------------
-#EXAMPLE how to use it. DON'T UNCOMMENT
-- name: Git commit
-  include_role:
-    name: xussof.common_git-commit
-  vars:
-    git_chdir: "/{{ host_root_dir }}/{{ repos_dir }}/{{ item.value.repo_git_name }}/{{ item.value.repo_project }}{{ item.value.repo_name }}"
-    git_branch: "{{ item.value.repo_git_branch|default('master') }}"
-    git_repo_name: "{{ item.value.repo_name }}"
-    git_comment: "Created new kapsule cluster for int"
 
-true, false
-with_commits: true
+    - name: Git commit
+      include_role:
+        name: common_git-commit
+      vars:
+        git_chdir: "/{{ host_root_dir }}/{{ repos_dir }}/{{ item.value.repo_git_name }}/{{ item.value.repo_project }}{{ item.value.repo_name }}"
+        git_branch: "{{ item.value.repo_git_branch|default('master') }}"
+        git_repo_name: "{{ item.value.repo_name }}"
+        git_comment: "Created new kapsule cluster for int"
+
+    true, false
+    with_commits: true
 
 Dependencies
 ------------
@@ -36,7 +35,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - xussof.common_git-commit
+         - common_git-commit
 
 License
 -------
@@ -45,4 +44,4 @@ BSD
 
 Author Information
 ------------------
-Made by @xussof
+Made by @sergi-canas
